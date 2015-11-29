@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_CHARACTER = "character";
@@ -23,8 +25,16 @@ public class DetailActivity extends AppCompatActivity {
         }
         GoTCharacter gotCharacter = getIntent().getParcelableExtra(EXTRA_CHARACTER);
         setTitle(gotCharacter.name);
-        new DownloadImageTask((ImageView) findViewById(R.id.image_character)).execute(MainActivity.SERVERL_URL + gotCharacter.fullUrl);
-        new DownloadImageTask((ImageView) findViewById(R.id.image_house)).execute(MainActivity.SERVERL_URL + gotCharacter.houseUrl);
+        Picasso.with(this)
+                .load(Uri.parse(MainActivity.SERVERL_URL + gotCharacter.fullUrl))
+                .placeholder(R.drawable.profile_placeholder_full)
+                .error(R.drawable.profile_placeholder_error_full)
+                .into((ImageView) findViewById(R.id.image_character));
+        Picasso.with(this)
+                .load(Uri.parse(MainActivity.SERVERL_URL + gotCharacter.houseUrl))
+                .placeholder(R.drawable.house_placeholder)
+                .error(R.drawable.house_placeholder_error)
+                .into((ImageView) findViewById(R.id.image_house));
         ((TextView) findViewById(R.id.text_house_name)).setText(gotCharacter.house);
         ((TextView) findViewById(R.id.text_character_story)).setText(gotCharacter.description);
     }

@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "GOT_APP";
     public static final String SERVERL_URL = "https://s3-ap-southeast-1.amazonaws.com/android-bootcamp-assets/";
@@ -54,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
     public static class GoTAdapter extends BaseAdapter {
         private final LayoutInflater inflater;
         private final DatabaseHelper databaseHelper;
+        private final Context context;
         private Cursor cursor;
 
         public GoTAdapter(Context context) {
+            this.context = context;
             databaseHelper = DatabaseHelper.getDatabaseHelper(context);
             inflater = LayoutInflater.from(context);
         }
@@ -97,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
             GoTCharacter item = getItem(position);
             GotViewHolder tag = (GotViewHolder) convertView.getTag();
             tag.name.setText(item.name);
-            new DownloadImageTask(tag.image).execute(SERVERL_URL + item.thumbUrl);
+            Picasso.with(context)
+                    .load(Uri.parse(SERVERL_URL + item.thumbUrl))
+                    .placeholder(R.drawable.profile_placeholder)
+                    .error(R.drawable.profile_placeholder_error)
+                    .into(tag.image);
             return convertView;
         }
 
