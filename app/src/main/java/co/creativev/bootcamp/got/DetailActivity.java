@@ -1,5 +1,6 @@
 package co.creativev.bootcamp.got;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +23,8 @@ public class DetailActivity extends AppCompatActivity {
         }
         GoTCharacter gotCharacter = getIntent().getParcelableExtra(EXTRA_CHARACTER);
         setTitle(gotCharacter.name);
-        ((ImageView) findViewById(R.id.image_character)).setImageResource(gotCharacter.fullResId);
-        ((ImageView) findViewById(R.id.image_house)).setImageResource(gotCharacter.houseResId);
+        new DownloadImageTask((ImageView) findViewById(R.id.image_character)).execute(MainActivity.SERVERL_URL + gotCharacter.fullUrl);
+        new DownloadImageTask((ImageView) findViewById(R.id.image_house)).execute(MainActivity.SERVERL_URL + gotCharacter.houseUrl);
         ((TextView) findViewById(R.id.text_house_name)).setText(gotCharacter.house);
         ((TextView) findViewById(R.id.text_character_story)).setText(gotCharacter.description);
     }

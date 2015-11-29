@@ -3,6 +3,7 @@ package co.creativev.bootcamp.got;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "GOT_APP";
+    public static final String SERVERL_URL = "https://s3-ap-southeast-1.amazonaws.com/android-bootcamp-assets/";
+
     private GoTAdapter adapter;
 
     @Override
@@ -69,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
             cursor.moveToPosition(position);
             return new GoTCharacter(
                     cursor.getString(cursor.getColumnIndexOrThrow(GoTCharacter.NAME)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(GoTCharacter.RES_ID)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(GoTCharacter.FULL_RES_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(GoTCharacter.THUMB_URL)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(GoTCharacter.FULL_URL)),
                     true,
                     cursor.getString(cursor.getColumnIndexOrThrow(GoTCharacter.HOUSE)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(GoTCharacter.HOUSE_RES_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(GoTCharacter.HOUSE_URL)),
                     cursor.getString(cursor.getColumnIndexOrThrow(GoTCharacter.DESCRIPTION))
             );
         }
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             GoTCharacter item = getItem(position);
             GotViewHolder tag = (GotViewHolder) convertView.getTag();
             tag.name.setText(item.name);
-            tag.image.setImageResource(item.resId);
+            new DownloadImageTask(tag.image).execute(SERVERL_URL + item.thumbUrl);
             return convertView;
         }
 

@@ -6,27 +6,27 @@ import android.provider.BaseColumns;
 
 public class GoTCharacter implements Parcelable, BaseColumns {
     public static final String NAME = "name";
-    public static final String RES_ID = "res_id";
-    public static final String FULL_RES_ID = "full_res_id";
+    public static final String THUMB_URL = "thumb_url";
+    public static final String FULL_URL = "full_url";
     public static final String HOUSE = "house";
-    public static final String HOUSE_RES_ID = "house_res_id";
+    public static final String HOUSE_URL = "house_url";
     public static final String DESCRIPTION = "description";
-    public static final String[] ALL_COLS = {_ID, NAME, RES_ID, FULL_RES_ID, HOUSE, HOUSE_RES_ID, DESCRIPTION};
+    public static final String[] ALL_COLS = {_ID, NAME, THUMB_URL, FULL_URL, HOUSE, HOUSE_URL, DESCRIPTION};
 
     public final String name;
-    public final int resId;
+    public final String thumbUrl;
     public final boolean alive;
-    public final int fullResId;
-    public final int houseResId;
+    public final String fullUrl;
+    public final String houseUrl;
     public final String house;
     public final String description;
 
-    public GoTCharacter(String name, int resId, int fullResId, boolean alive, String house, int houseResId, String description) {
+    public GoTCharacter(String name, String thumbUrl, String fullUrl, boolean alive, String house, String houseUrl, String description) {
         this.name = name;
-        this.resId = resId;
+        this.thumbUrl = thumbUrl;
         this.alive = alive;
-        this.fullResId = fullResId;
-        this.houseResId = houseResId;
+        this.fullUrl = fullUrl;
+        this.houseUrl = houseUrl;
         this.house = house;
         this.description = description;
     }
@@ -39,20 +39,20 @@ public class GoTCharacter implements Parcelable, BaseColumns {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
-        dest.writeInt(this.resId);
+        dest.writeString(this.thumbUrl);
         dest.writeByte(alive ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.fullResId);
-        dest.writeInt(this.houseResId);
+        dest.writeString(this.fullUrl);
+        dest.writeString(this.houseUrl);
         dest.writeString(this.house);
         dest.writeString(this.description);
     }
 
     protected GoTCharacter(Parcel in) {
         this.name = in.readString();
-        this.resId = in.readInt();
+        this.thumbUrl = in.readString();
         this.alive = in.readByte() != 0;
-        this.fullResId = in.readInt();
-        this.houseResId = in.readInt();
+        this.fullUrl = in.readString();
+        this.houseUrl = in.readString();
         this.house = in.readString();
         this.description = in.readString();
     }
